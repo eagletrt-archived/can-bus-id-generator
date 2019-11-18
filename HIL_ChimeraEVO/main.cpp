@@ -360,7 +360,7 @@ int main(int argc, char *argv[])
     QString bufferEnd = "\n#endif";
 
 
-    QString filename = "../export/E-agleTRTCanMsg.h";
+    QString filename = "../E-agleTRTCanMsg.h";
     QFile fileWrite(filename);
     if (fileWrite.open(QIODevice::ReadWrite | QFile::Truncate)) {
         QTextStream stream(&fileWrite);
