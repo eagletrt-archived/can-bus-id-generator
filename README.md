@@ -8,75 +8,148 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-This software was implemented with `QTCreator` in `C++` for feature graphic implementations (writing the .json files could be a mass the first times).
+This software was implemented with `QTCreator` in `C++` for feature graphic implementations (writing the `.json` files could be a mass the first times).
 
 ### Installing
 
 The following steps give you the possibility to run and modify the code in order to implement for your requirements.
 
 Get QTCreator software from:
+
 ```
 https://www.qt.io/
 ```
 
-and follow the installation steps from the website guide: 
+and follow the installation steps from the website guide:
 
 ```
 https://www.qt.io/download-open-source?hsCtaTracking=9f6a2170-a938-42df-a8e2-a9f0b1d6cdce%7C6cb0de4f-9bb5-4778-ab02-bfb62735f3e5
 ```
 
-Now we are ready for coding.
+Now we are ready for coding on QTCreator.
 
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+If you have not clone one of the other repositories of `eagletrt` user than clone one of them with the following comand. If you did it skip this step:
 
 ```
-Give an example
+git clone https://github.com/eagletrt/the-repo.git
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
+Then due to the fact this repo uses sub-modules you have to perform:
 
 ```
-Give an example
+git submodule init
 ```
 
-## Deployment
+and
 
-Add additional notes about how to deploy this on a live system
+```
+git submodule update
+```
+
+Now you have the cloned repo of your interest with inside a linked folder to the `can-bus-id-generator`. Every time you need to refresh your linked `can-bus-id-generator` just type:
+
+```
+git submodule update
+```
+
+and your file will be update to newest version of can-bus-id-generator.
+
+## Running the software
+
+To run the software different steps are required. First of all you have to write the `.json` files with your own messages in this way:
+
+```
+ {
+    "array":[{
+        "name": "ENC_L_FROM_ACU",
+        "priority": 20,
+        "device": "ACU",
+        "id": 10,
+        "send_to": ["SW", "CONTR"],
+        "to_mod": 1,
+        "byte0": "speed/256",
+        "byte1": "speed%256",
+        "byte2": "sign",
+        "byte3": "prescaler",
+        "byte4": "meters/256",
+        "byte5": "meters%256",
+        "byte6": "error",
+        "byte7": ""
+    },{
+        "name": "ENC_R_FROM_ACU",
+        "priority": 20,
+        "device": "ACU",
+        "id": 10,
+        "send_to": ["SW", "CONTR"],
+        "to_mod": 0,
+        "byte0": "speed/256",
+        "byte1": "speed%256",
+        "byte2": "sign",
+        "byte3": "prescaler",
+        "byte4": "meters/256",
+        "byte5": "meters%256",
+        "byte6": "error",
+        "byte7": ""
+    }]
+    }
+```
+
+Where:
+
+- `name` is the name of your message;
+- `priority` is the desired priority you want for that message;
+- `device` is the sender;
+- `id` is a random one. It will be generated from then from software;
+- `send_to` defines to which devices the message will be sent;
+- `to_mod` indicates if that messages will be modified `1` or not `0` just if you want to maintenied some IDs as you set in the `.json` files;
+- `byte0-7` specificies the payload of your messages.
+
+The software gives you the possibility to write multiple `.json` files in order to separate each type of message (ex: the start-up messages from the sensors messages). Just insert into the code the file you want to open in the files handler section with:
+
+```
+files.push_back("../import/sensors.json");
+```
+
+Than run the code with the `green play button` in QTCreator, a terminal will display the results and header file is generated in your project folder:
+
+```
+E-agleTRTCanMsg.h
+```
+```
+#ifndef _EAGLE_TRT_CAN_MSG_H
+#define _EAGLE_TRT_CAN_MSG_H
+
+#define ENC_L_FROM_ACU 20 	 //ACU sending to: SW CONTR --> B0: speed/256 | B1: speed%256 | B2: sign | B3: prescaler | B4: meters/256 | B5: meters%256 | B6: error | B7: 
+#define ENC_R_FROM_ACU 10 	 //ACU sending to: SW CONTR --> B0: speed/256 | B1: speed%256 | B2: sign | B3: prescaler | B4: meters/256 | B5: meters%256 | B6: error | B7: 
+
+#endif
+```
+
+This file contains all the generated IDs based on masks you put at the initial part of the code. This code is based on binary operation in order to set the proper IDs so you have to think to your own masks best solution. In our case it is:
+
+```
+mask.tel = 0b00000000000;       //0
+mask.acu = 0b00000000001;       //1
+mask.bms_hv = 0b00000000010;    //2
+mask.contr = 0b00000000100;     //4
+mask.atc = 0b00000001000;       //8
+mask.sw = 0b00000010000;        //16
+mask.bms_lv = 0b00000100000;    //32
+```
+CAN-BUS protocol is not explained here but these masks are the results of a study on it in order to find the best approach for our arch. This method avoid the possibility of collision of messages with a more robust and faster approach.
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+- [QTCreator](https://www.qt.io/) - QTCreator
+- [Nlohmann](https://github.com/nlohmann/json) - JSON for Modern C++
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+This is the first version for the `can-bus-id-generator`. Probably a new version will be deployed later with graphics contnet in order to make `.json` file writing and the header reading easier.
 
-## Authors
+## E-agleTRT contacts
+For issues and questions please contact us fsae.unitn@gmail.com, for tech matteo.spadetto-1@studenti.unitn.it and for GitHub problems matteo.bonora@studenti.unitn.it
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+- **E-agle Trento Racing Team GitHub** - _eagletrt user_ - [eagletrt](https://github.com/eagletrt)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+- See also our [website](https://eagletrt.it/).
