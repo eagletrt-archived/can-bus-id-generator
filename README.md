@@ -54,7 +54,7 @@ git submodule update
 
 and your files will be update to the newest version of `can-bus-id-generator`.
 
-## Compile and Run for VScode
+## Compile and run for VScode
 
 After the previous steps, if you want to compile and run this project on `VScode` just import it and than in `deploy.sh` file you have to change the `QMAKE` path to your `QtCreator` qmake file.
 
@@ -62,7 +62,7 @@ After the previous steps, if you want to compile and run this project on `VScode
 QMAKE="/opt/Qt/5.12.0/gcc_64/bin/qmake"
 ```
 
-## Running the software
+## Software
 
 To run the software different steps are required. First of all you have to write the `.json` files with your own messages in this way:
 
