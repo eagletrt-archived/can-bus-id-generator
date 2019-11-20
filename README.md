@@ -185,6 +185,7 @@ This method avoid the possibility of collision of the messages with a more robus
 
 ## Built With
 
+- [VScode](https://code.visualstudio.com/) - VScode
 - [QtCreator](https://www.qt.io/) - QtCreator
 - [Nlohmann](https://github.com/nlohmann/json) - JSON for Modern C++
 
