@@ -132,13 +132,13 @@ int main(int argc, char *argv[])
 
     ///Setting device filters///
 
-    filter.tel = 0b00000011111;     //2047
-    filter.acu = 0b00000011111;     //2047
-    filter.bms_hv = 0b00000011111;  //2047
-    filter.contr = 0b00000011111;   //2047
-    filter.atc = 0b00000011111;     //2047
-    filter.sw = 0b00000011111;      //2047
-    filter.bms_lv = 0b00000011111;  //2047
+    filter.tel = 0b00000111111;     //2047
+    filter.acu = 0b00000111111;     //2047
+    filter.bms_hv = 0b00000111111;  //2047
+    filter.contr = 0b00000111111;   //2047
+    filter.atc = 0b00000111111;     //2047
+    filter.sw = 0b00000111111;      //2047
+    filter.bms_lv = 0b00000111111;  //2047
 
     ///Opening .json files where messages are stored and storing the .json structure///
 
